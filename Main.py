@@ -250,6 +250,42 @@ for i in labels:
         plt.legend()
         plt.show()
 
+        # Prediction I've used the argmax function as each row from the prediction array contains four values for the respective labels. 
+        # The maximum value which is in each row depicts the predicted output out of the 4 possible outcomes. 
+        # So with argmax, I'm able to find out the index associated with the predicted outcome.
+
+
+pred = model_cnn.predict(X_test)
+pred = np.argmax(pred,axis=1)
+y_test_new = np.argmax(y_test,axis=1)
+
+accuracy = np.sum(pred==y_test_new)/len(pred)
+print("Accuracy on testing dataset: {:.2f}%".format(accuracy*100))
+
+#  Evaluation
+
+model_cnn.evaluate(X_train, y_train)
+
+# In this,
+
+# 0 - Glioma Tumor
+# 1 - Meningioma Tumor
+# 2 - No Tumor
+# 3 - Pituitary Tumo
+
+print(classification_report(y_test_new,pred))
+
+fig,ax=plt.subplots(1,1,figsize=(14,7))
+sns.heatmap(confusion_matrix(y_test_new,pred),ax=ax,xticklabels=labels,yticklabels=labels,annot=True)
+fig.text(s='Heatmap of the Confusion Matrix',size=18,fontweight='bold',
+             fontname='monospace',y=0.92,x=0.28,alpha=0.8)
+
+plt.show()
+
+
+
+
+
         
 
 
